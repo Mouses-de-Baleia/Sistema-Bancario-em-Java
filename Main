@@ -1,0 +1,126 @@
+package sistemaBanco;
+
+import java.util.*;
+import java.text.*;
+
+public class Main {
+
+	private Scanner inputUsuario;
+	private Usuario codigoUsuario;
+	private DecimalFormat df;
+	
+	public Main(){
+		this.inputUsuario = new Scanner(System.in);
+		this.df = new DecimalFormat("#,##0.00");
+		System.out.println("Digite seu nome");
+		String nomeUsuario = this.inputUsuario.next();
+		System.out.println("Digite seu sobrenome");
+		String sobrenomeUsuario = this.inputUsuario.next();
+		System.out.println("Digite seu CPF");
+		String cpfUsuario = this.inputUsuario.next();
+		this.codigoUsuario = new Usuario(nomeUsuario, sobrenomeUsuario, cpfUsuario);
+	}
+	
+	void Opcoes() {
+		System.out.println("Seja bem vindo(a) "+ this.codigoUsuario.InformacoesUsuario());
+		System.out.println("O que deseja fazer?");
+		System.out.println("1: Consulta de Saldo \n2: Depositar \n3: Sacar \n4: Histórico de Transações \n5: Sair do sistema");
+		this.inputUsuario.nextLine();
+	}
+	
+	String Verificador() {
+		while(true) {
+			try {
+				String valorInput = this.inputUsuario.next();
+				return valorInput;
+			}
+			catch(Exception e) {
+				System.out.println("Valor invalida, tente novamente");
+				this.inputUsuario.nextLine();
+			}
+		}
+	}
+	
+	double ValorSaqueDeposito() {
+		String valorString = this.Verificador();
+		double valorConvertido = (valorString.matches("\\d+(\\.\\d+)?")) ? Double.valueOf(valorString) : 0;
+		return valorConvertido;
+	}
+	
+	void Iniciar() {
+		while(true) {
+			System.out.println("Antes de continuar, confime seu CPF: \n");
+			boolean confirmacaoCPF = this.codigoUsuario.ConfirmarCPF(this.Verificador());
+			if(confirmacaoCPF) {
+				this.Opcoes();
+				while(true) {
+					int index = (int)this.ValorSaqueDeposito();
+					switch(index) {
+					case 1:
+						String consultaSaldo = this.codigoUsuario.ConsultaSaldo();
+						System.out.println("Seu saldo é de: R$"+ df.format(Double.valueOf(consultaSaldo)));
+						this.codigoUsuario.AdicionarLog("Consulta de Saldo");
+						this.Opcoes();
+						break;
+					case 2:
+						while(true) {
+							System.out.println("Digite o valor de depósito: ");
+							double valorDeposito = this.ValorSaqueDeposito();
+							if(valorDeposito > 0) {
+								double valorSaldo = this.codigoUsuario.ModificarSaldo(valorDeposito);
+								System.out.println("Seu novo saldo é de: R$"+ df.format(valorSaldo));
+								this.codigoUsuario.AdicionarLog("Deposito de R$" + df.format(valorDeposito));
+								this.Opcoes();
+								break;	
+							}
+							else {
+								System.out.println("O valor de depósito deve ser diferente de 0.");
+								this.Opcoes();
+								break;	
+							}
+						}
+						break;
+					case 3:
+						while(true) {
+							System.out.println("Digite o valor de saque: ");
+							double valorSaque = this.ValorSaqueDeposito();
+							boolean verificarsaldo = this.codigoUsuario.VerificarSaldo(valorSaque);
+							if(verificarsaldo && valorSaque > 0) {
+								double valorSaldo = this.codigoUsuario.ModificarSaldo(-valorSaque);
+								System.out.println("Seu novo saldo é de: R$"+ df.format(valorSaldo));
+								this.codigoUsuario.AdicionarLog("Saque de R$" + df.format(valorSaque));
+								this.Opcoes();
+								break;	
+							}
+							else {
+								System.out.println("Valor de saque invalido. Por favor tente novamente.");
+								this.Opcoes();
+								break;	
+							}
+						}
+						break;
+					case 4:
+						this.codigoUsuario.ExtratoLog();
+						this.Opcoes();
+						break;
+					case 5:
+						System.out.println("Obrigado por utilizar nosso banco.");
+						break;
+					default:
+						System.out.println("Opção invalida, tente novamente");
+						this.Opcoes();
+					}
+				}
+			}
+			else {
+				System.out.println("CPF inválido, tente novamente.");
+				this.inputUsuario.nextLine();
+			}
+		}
+	}
+	
+	public static void main(String[] args) {
+		Main codigo = new Main();
+		codigo.Iniciar();
+	}
+}

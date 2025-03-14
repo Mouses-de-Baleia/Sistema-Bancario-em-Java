@@ -15,7 +15,7 @@ Este é um sistema bancário simples desenvolvido em Java, aplicando conceitos d
 ## 📚 Tecnologias Utilizadas
 
 - **Java SE Development Kit (JDK)**
-- **Bibliotecas Java** (`java.util`, `java.time`, `java.text`)
+- **Bibliotecas Java** (`java.util`, `java.time`)
 
 ---
 

@@ -1,0 +1,63 @@
+package sistemaBanco;
+
+import java.time.*;
+import java.util.*;
+import java.time.format.*;
+
+public class Usuario {
+
+	private String nome;
+	private String sobrenome;
+	private String cpf;
+	private double saldo;
+	private ArrayList<String> logSistema;	
+	
+	public Usuario(String nomeDigitado, String sobrenomeDigitado, String cpfDigitado) {
+		this.nome = nomeDigitado;
+		this.sobrenome = sobrenomeDigitado;
+		this.cpf = cpfDigitado;
+		this.logSistema = new ArrayList<String>();
+		this.saldo = 0;
+	}
+	
+	public void AdicionarLog(String Acao) {
+		DateTimeFormatter formatadorLog = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+		LocalDateTime dataLog = LocalDateTime.now();
+		String addLog = dataLog.format(formatadorLog);
+		this.logSistema.add(addLog + " Ação: " + Acao);
+	}
+	
+	public double ModificarSaldo(double valorDeposito) {
+		this.saldo += valorDeposito;
+		return this.saldo;
+	}
+	
+	public String ConsultaSaldo() {
+		String consultaSaldo = Double.toString(this.saldo);
+		return consultaSaldo;
+	}
+	
+	public boolean VerificarSaldo(double valor) {
+		if(this.saldo - valor < 0) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
+	public void ExtratoLog() {
+		for(int i = 0; i < logSistema.size(); i++) {
+			System.out.println(logSistema.get(i));
+		}
+	}
+	
+	public String InformacoesUsuario() {
+		String nometotal = this.nome +" "+this.sobrenome;
+		return nometotal;
+	}
+	
+	public boolean ConfirmarCPF(String CPFUsuario) {
+		return this.cpf.equals(CPFUsuario);
+	}
+}

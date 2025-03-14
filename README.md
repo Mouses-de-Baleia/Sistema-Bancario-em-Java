@@ -22,8 +22,10 @@ Este é um sistema bancário simples desenvolvido em Java, aplicando conceitos d
 ## 🔧 Como Executar
 
 Certifique-se de ter um compilador de Java instalado em seu sistema (como Eclipse IDE ou NetBeans IDE.
-Clone este repositório ou faça o download do código fonte.
-Abra o terminal e navegue até o diretório do projeto.
+Crie um novo projeto.
+Crie o pacote sistemaBanco.
+Crie a classe Usuario e Main.
+Copie e cole os códigos em suas respectivas classes.
 Execute o programa.
 
 # 📌 Fluxo de Operações
